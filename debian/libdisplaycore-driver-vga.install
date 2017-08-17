@@ -1,0 +1,3 @@
+VGA.cpp libraries/DisplayCore/VGA
+VGA.h libraries/DisplayCore/VGA
+examples/ libraries/DisplayCore/VGA
