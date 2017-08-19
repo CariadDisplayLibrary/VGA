@@ -18,6 +18,7 @@
 #ifdef __PIC32MZ__
 #define _TIMER_5_IRQ _TIMER_5_VECTOR
 #define _SPI4_TX_IRQ _SPI4_TX_VECTOR
+#define _CORE_TIMER_IRQ _CORE_TIMER_VECTOR
 #endif
 
 class VGA : public DisplayCore {
@@ -72,10 +73,10 @@ class VGA : public DisplayCore {
         VGA(uint8_t hsync, uint8_t vsync);
         void initializeDevice();
         void setPixel(int x, int y, color_t c);
-        void setRotation(int r) {}
+        void setRotation(int __attribute__((unused)) r) {}
         void displayOn() {}
         void displayOff() {}
-        void invertDisplay(boolean i) {}
+        void invertDisplay(boolean __attribute__((unused)) i) {}
 
         int getWidth() { return Width; }
         int getHeight() { return Height; }

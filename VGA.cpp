@@ -23,7 +23,7 @@ static const uint32_t VGA_TICK = 21; //49;
 volatile uint32_t vgaScanLine = 0;
 volatile uint32_t vgaMilliCount = 0;
 
-void __USER_ISR __attribute((no_auto_psr)) vgaProcess() {
+void __USER_ISR __attribute__((no_auto_psr)) vgaProcess() {
     static uint32_t ramPos = 0;
 
     // The current scan line on the display
@@ -204,11 +204,11 @@ void VGA::flip() {
 void VGA::fillScreen(color_t c) {
     if (c) {
         for (uint32_t line = 0; line < Height; line++) {
-            memset((void *)activeBuffer + (line * ((Width/8)+1)), 0xFF, (Width/8));
+            memset((void *)(activeBuffer + (line * ((Width/8)+1))), 0xFF, (Width/8));
         }
     } else {
         for (uint32_t line = 0; line < Height; line++) {
-            memset((void *)activeBuffer + (line * ((Width/8)+1)), 0x00, (Width/8));
+            memset((void *)(activeBuffer + (line * ((Width/8)+1))), 0x00, (Width/8));
         }
     }
 }
