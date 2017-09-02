@@ -21,6 +21,8 @@ static const uint8_t blank[100] = {0}; // A blank line
 static volatile uint8_t *vgaBuffer;
 static volatile uint8_t pulsePhase = 0;
 
+static volatile uint32_t scanLine = 0;
+
 #define PULSEPOS 2340
 #define PULSEWIDTH 10
 
@@ -53,7 +55,6 @@ void __USER_ISR vgaProcess() {
 
     debug_port->lat.inv = debug_pin;
 
-    static uint32_t _scanLine = 0;
     static uint32_t _ramPos = 0;
 
     DCH0INTbits.CHSDIF = 0;
@@ -65,8 +66,8 @@ void __USER_ISR vgaProcess() {
     T5CONbits.ON=1;
 
 
-    if (_scanLine == 0) _ramPos = 0;
-    if (_scanLine < 480) {
+    if (scanLine == 0) _ramPos = 0;
+    if (scanLine < 480) {
         DCH0SSA = ((uint32_t)&vgaBuffer[_ramPos]) & 0x1FFFFFFF;
     } else {
         DCH0SSA = ((uint32_t)&blank[0]) & 0x1FFFFFFF;
@@ -76,15 +77,15 @@ void __USER_ISR vgaProcess() {
     DCH0ECONbits.CFORCE = 1;
     DCH0CONbits.CHEN = 1;
 
-    _ramPos += VGA::vgaHTOT >> 3;
-    _scanLine++;
+    if (scanLine & 1) _ramPos += VGA::vgaHTOT >> 3;
+    scanLine++;
 
-    if (_scanLine == 490) {
+    if (scanLine == 490) {
         VSYNC_ON
-    } else if (_scanLine == 492) {
+    } else if (scanLine == 492) {
         VSYNC_OFF
-    } else if (_scanLine == 525) {
-        _scanLine = 0;
+    } else if (scanLine == 525) {
+        scanLine = 0;
     }
 }
 
@@ -97,7 +98,7 @@ void VGA::initializeDevice() {
         return;
     }
 
-    memset((void *)_buffer0, 0, (vgaHTOT >> 3) * vgaVTOT);
+    memset((void *)_buffer0, 0, (vgaHTOT >> 3) * (vgaVTOT >> 1));
     vgaBuffer = _buffer0;
 
     _hsync_port->tris.clr = _hsync_pin;
@@ -162,7 +163,7 @@ VGA::VGA(uint8_t hsync, uint8_t vsync) {
     uint32_t port = 0;
 
     _scanPhase = 0;
-    _scanLine = 0;
+    scanLine = 0;
     _ramPos = 0;
 
     _hsync_pin = 0;
@@ -202,7 +203,7 @@ void VGA::setPixel(int x, int y, color_t c) {
 }
 
 void VGA::vblank() {
-    while (_scanLine != 480);
+    while (scanLine != 480);
 }
 
 void VGA::flip() {
@@ -210,11 +211,11 @@ void VGA::flip() {
 
 void VGA::fillScreen(color_t c) {
     if (c) {
-        for (int i = 0; i < vgaVDP; i++) {
+        for (int i = 0; i < (vgaVDP >> 1); i++) {
             memset((void *)&_buffer0[(vgaHTOT >> 3) * i + 1], 255, vgaHDP>>3);
         }
     } else {
-        memset((void *)_buffer0, 0, (vgaHTOT >> 3) * vgaVTOT);
+        memset((void *)_buffer0, 0, (vgaHTOT >> 3) * (vgaVTOT >> 1));
     }
 }
 

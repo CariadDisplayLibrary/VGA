@@ -24,7 +24,7 @@
 class VGA : public DisplayCore {
     public:
         static const int Width = 320;
-        static const int Height = 480;
+        static const int Height = 240;
 
         static VGA *_unit;
 
@@ -54,7 +54,7 @@ class VGA : public DisplayCore {
 
         static const uint32_t vgaVert[];
 
-        volatile uint8_t _buffer0[(vgaHTOT/8) * vgaVTOT] __attribute__((aligned(4)));
+        volatile uint8_t _buffer0[(vgaHTOT/8) * (vgaVTOT >> 1)] __attribute__((aligned(4)));
 
         volatile uint8_t *activeBuffer;
 
