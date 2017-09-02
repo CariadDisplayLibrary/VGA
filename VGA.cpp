@@ -11,10 +11,8 @@ VGA *VGA::_unit;
 
 p32_ioport *hsync_port;
 p32_ioport *vsync_port;
-p32_ioport *debug_port;
 uint32_t hsync_pin;
 uint32_t vsync_pin;
-uint32_t debug_pin;
 
 static const uint8_t blank[100] = {0}; // A blank line
 
@@ -53,7 +51,6 @@ void __USER_ISR horizPulse() {
 
 void __USER_ISR vgaProcess() {
 
-    debug_port->lat.inv = debug_pin;
 
     static uint32_t _ramPos = 0;
 
@@ -181,11 +178,6 @@ VGA::VGA(uint8_t hsync, uint8_t vsync) {
     if (port == NOT_A_PIN) { return; }
     _vsync_port = (p32_ioport *)portRegisters(port);
     _vsync_pin = digitalPinToBitMask(vsync);
-
-    port = digitalPinToPort(1);
-    if (port == NOT_A_PIN) { return; }
-    debug_port = (p32_ioport *)portRegisters(port);
-    debug_pin = digitalPinToBitMask(1);
 }
 
 void VGA::setPixel(int x, int y, color_t c) {
