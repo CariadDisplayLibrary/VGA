@@ -152,7 +152,6 @@ void VGA::initializeDevice() {
     // So we have to disable it. That means no millis() and no delay().
     // Makes things a little more interesting...
     clearIntEnable(_CORE_TIMER_IRQ);
-    pinMode(1, OUTPUT);
 }
 
 VGA::VGA(uint8_t hsync, uint8_t vsync) {
