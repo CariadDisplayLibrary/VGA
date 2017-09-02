@@ -23,25 +23,19 @@
 
 class VGA : public DisplayCore {
     public:
-        static const int Width = 768 / (VGA_USE_H_RES + 1);
-        static const int Height = 480 / (VGA_USE_V_RES + 1);
-    private:
-        static const uint32_t clockOffset = 10;
+        static const int Width = 320;
+        static const int Height = 480;
 
-        // All these are in clock cycles
-        // For an 80 MHz chip each clock cycle is 13ns.
+        static VGA *_unit;
 
-        static const uint32_t hoff = 10;
 
         // VGA timings specify:
-        // Front porch = 636ns = 49 cycles
-        static const uint32_t vgaHFP = 49 + 20 + hoff;
-        // Pulse width = 3813ns = 293 cycles (240)
-        static const uint32_t vgaHSP = 293;  // HSync pulse == 293 clock cycles
-        // Back porch = 1907ns = 147 cycles
-        static const uint32_t vgaHBP = 147 - hoff; // Back porch == 147 clock cycles
-        // Whole line is 31778ns = 2444 cycles.
-        static const uint32_t vgaHDP = 2444 - vgaHBP - vgaHSP - vgaHFP - 200; // Display period == 1956 clock cycles
+        static const uint32_t vgaHFP = 16/2;
+        static const uint32_t vgaHSP = 96/2;
+        static const uint32_t vgaHBP = 48/2;
+        static const uint32_t vgaHDP = 640/2;
+
+        static const uint32_t vgaHTOT = vgaHFP + vgaHSP + vgaHBP + vgaHDP;
 
         static const uint32_t vgaHoriz[];
 
@@ -50,14 +44,17 @@ class VGA : public DisplayCore {
         static const uint32_t vgaVSP = 2;
         static const uint32_t vgaVBP = 33;
         static const uint32_t vgaVDP = 480;
+        static const uint32_t vgaVTOT = vgaVFP + vgaVSP + vgaVBP + vgaVDP;
+
+    private:
+        uint32_t _scanPhase;
+        uint32_t _scanLine;
+        uint32_t _ramPos;
+
 
         static const uint32_t vgaVert[];
-        static const uint32_t vgaOffset = 45;
 
-        volatile uint8_t _buffer0[((Width/8)+1) * Height] __attribute__((aligned(4)));
-#if VGA_USE_DOUBLE_BUFFER
-        volatile uint8_t _buffer1[((Width/8)+1) * Height] __attribute__((aligned(4)));
-#endif
+        volatile uint8_t _buffer0[(vgaHTOT/8) * vgaVTOT] __attribute__((aligned(4)));
 
         volatile uint8_t *activeBuffer;
 
@@ -87,6 +84,9 @@ class VGA : public DisplayCore {
         void fillScreen(color_t c);
 
         uint32_t millis();
+
+        static void processInterrupt() { if (_unit) _unit->runInterrupt(); }
+        void runInterrupt();
 
 };
 
