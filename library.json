@@ -6,7 +6,7 @@
     "repository":
     {
       "type": "git",
-      "url": "https://github.com/MajenkoLibraries/DisplayCore.git"
+      "url": "https://github.com/DisplayCore/VGA.git"
     },
     "dependencies": [ { "name": "DisplayCore", "version": "1.18.8" } ],
     "export": {
