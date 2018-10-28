@@ -12,7 +12,7 @@ XBSC-Group: DisplayCore
 XBSC-Subgroup: Drivers
 Depends: libdisplaycore-core
 Provides: VGA.h
-Description: VGA Driver for DisplayCore
+Description: VGA
  Generate a crude VGA signal through SPI4
 
 
