@@ -1,3 +1,5 @@
-VGA.cpp libraries/DisplayCore/VGA
-VGA.h libraries/DisplayCore/VGA
-examples/ libraries/DisplayCore/VGA
+examples libraries/DisplayCore/VGA
+library.json libraries/DisplayCore/VGA
+library.properties libraries/DisplayCore/VGA
+library.txt libraries/DisplayCore/VGA
+src libraries/DisplayCore/VGA
