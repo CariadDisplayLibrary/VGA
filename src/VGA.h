@@ -1,7 +1,7 @@
 #ifndef _VGA_H
 #define _VGA_H
 
-#include <DisplayCore.h>
+#include <Cariad.h>
 
 #ifndef VGA_USE_DOUBLE_BUFFER
 #define VGA_USE_DOUBLE_BUFFER 0
@@ -21,7 +21,7 @@
 #define _CORE_TIMER_IRQ _CORE_TIMER_VECTOR
 #endif
 
-class VGA : public DisplayCore {
+class VGA : public Cariad {
     public:
         static const int Width = 320;
         static const int Height = 240;
