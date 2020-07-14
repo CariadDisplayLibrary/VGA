@@ -1,1 +1,26 @@
-{"name":"VGA","keywords":"display, cariad, tft, lcd, glcd, oled, graphics, font","description":"VGA for Cariad","homepage":"http:\/\/cariad.org\/wiki\/index.php?title=Acorn","repository":{"type":"git","url":"https:\/\/github.com\/Cariad\/VGA.git"},"dependencies":[{"name":"Cariad","version":"2.1.0"}],"export":{"exclude":"debian"},"authors":{"name":"Majenko Technologies","url":"http:\/\/majenko.co.uk"},"version":"2.1.2","frameworks":"arduino","platforms":"microchippic32"}
+{
+    "name": "VGA",
+    "keywords": "display, cariad, tft, lcd, glcd, oled, graphics, font",
+    "description": "VGA for Cariad",
+    "homepage": "https:\/\/github.com\/CariadDisplayLibrary\/VGA",
+    "repository": {
+        "type": "git",
+        "url": "https:\/\/github.com\/CariadDisplayLibrary\/VGA"
+    },
+    "dependencies": [
+        {
+            "name": "Cariad",
+            "version": "2.1.0"
+        }
+    ],
+    "export": {
+        "exclude": "debian"
+    },
+    "authors": {
+        "name": "Majenko Technologies",
+        "url": "http:\/\/majenko.co.uk"
+    },
+    "version": "2.1.5",
+    "frameworks": "arduino",
+    "platforms": "microchippic32"
+}
